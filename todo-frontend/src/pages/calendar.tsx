@@ -1,9 +1,33 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type JSX } from 'react';
 import axios from 'axios';
 import Sidebar from "../components/sidebar";
 import { BACKEND_URL } from '../config';
 import { CalendarDays, RefreshCcw } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+
+interface ApiTodo {
+    _id: string;
+    title: string;
+    time: string;
+    priority: 'urgent' | 'medium' | 'low';
+    boardName: string;
+    colorTheme: string;
+    columnId: string;
+}
+
+interface ApiBoard {
+    _id: string;
+    name: string;
+    colorTheme: string;
+}
+
+interface BoardsResponse {
+    userBoards: ApiBoard[];
+}
+
+interface TodosResponse {
+    todos: ApiTodo[];
+}
 
 interface Task {
   id: string;
@@ -66,14 +90,14 @@ export default function CalendarPage(): JSX.Element {
     setIsLoading(true);
     try {
       const token = await currentUser.getIdToken();
-      const boardsResponse = await axios.get(`${BACKEND_URL}/board/allBoards`, {
+      const boardsResponse = await axios.get<BoardsResponse>(`${BACKEND_URL}/board/allBoards`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
       const allTasks: any[] = [];
       for (const board of boardsResponse.data.userBoards) {
         try {
-          const todosResponse = await axios.get(`${BACKEND_URL}/todo/board/${board._id}/todos`, {
+          const todosResponse = await axios.get<TodosResponse>(`${BACKEND_URL}/todo/board/${board._id}/todos`, {
             headers: { Authorization: `Bearer ${token}` }
           });
 

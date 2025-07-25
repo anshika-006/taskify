@@ -1,11 +1,11 @@
-import { Flag, FileText, X, BookType, ClipboardPenLine, Calendar} from 'lucide-react';
+import { Flag, FileText, X, BookType, ClipboardPenLine, Calendar } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../config';
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { format } from 'date-fns';
-import { useAuth } from '../contexts/AuthContext'; // ✅ Add this import
+import { useAuth } from '../contexts/AuthContext';
 
 interface Todo {
     _id: string;
@@ -13,7 +13,7 @@ interface Todo {
     description: string;
     time: string;
     type: string;
-    priority: string;
+    priority: "low" | "medium" | "urgent";
     columnId: string;
     boardId: string;
     position?: number;
@@ -30,8 +30,19 @@ interface TodoFormProps {
     onTodoAdded: (todo: Todo) => void;
 }
 
+interface BoardColumn {
+    id: string;
+    name: string;
+}
+
+interface BoardResponse {
+    board: {
+        columns: BoardColumn[];
+    };
+}
+
 export default function TodoForm({ boardId, onClose, onTodoAdded }: TodoFormProps) {
-    const { currentUser } = useAuth(); // ✅ Add Firebase auth
+    const { currentUser } = useAuth();
     const today = new Date();
     const [selectedDate, setSelectedDate] = useState<Date>(today);
     const [month, setMonth] = useState<Date>(today);
@@ -42,7 +53,7 @@ export default function TodoForm({ boardId, onClose, onTodoAdded }: TodoFormProp
     const [clockTime, setClockTime] = useState('');
     const [ap, setAp] = useState('AM');
     const [columnId, setColumnId] = useState('');
-    const [availableColumns, setAvailableColumns] = useState<any[]>([]);
+    const [availableColumns, setAvailableColumns] = useState<BoardColumn[]>([]);
 
     useEffect(() => {
         async function fetchBoardColumns() {
@@ -53,7 +64,7 @@ export default function TodoForm({ boardId, onClose, onTodoAdded }: TodoFormProp
 
             try {
                 const token = await currentUser.getIdToken();
-                const response = await axios.get(`${BACKEND_URL}/board/oneBoard/${boardId}`, {
+                const response = await axios.get<BoardResponse>(`${BACKEND_URL}/board/oneBoard/${boardId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -67,7 +78,7 @@ export default function TodoForm({ boardId, onClose, onTodoAdded }: TodoFormProp
                 console.error('Error fetching board columns:', e);
             }
         }
-        
+
         if (boardId && currentUser) {
             fetchBoardColumns();
         }
@@ -77,7 +88,7 @@ export default function TodoForm({ boardId, onClose, onTodoAdded }: TodoFormProp
         setSelectedDate(today);
         setMonth(today);
     };
-    
+
     const formattedDate = selectedDate ? format(selectedDate, 'dd-MM-yyyy') : '';
 
     const handleSubmit = async () => {

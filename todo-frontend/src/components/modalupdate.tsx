@@ -4,7 +4,7 @@ import { BACKEND_URL } from '../config';
 import axios from 'axios';
 import { format } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
-import { useAuth } from '../contexts/AuthContext'; // ✅ Add this import
+import { useAuth } from '../contexts/AuthContext';
 
 interface Todo {
     _id: string;
@@ -12,7 +12,7 @@ interface Todo {
     description: string;
     time: string;
     type: string;
-    priority: string;
+    priority: "low" | "medium" | "urgent";
     columnId: string;
     boardId: string;
     position?: number;
@@ -29,8 +29,19 @@ interface UpdateModalProps {
     onTodoUpdated: (updatedTodo: Todo) => void;
 }
 
+interface BoardColumn {
+    id: string;
+    name: string;
+}
+
+interface BoardResponse {
+    board: {
+        columns: BoardColumn[];
+    };
+}
+
 export default function UpdateModal({ onClose, todo, onTodoUpdated }: UpdateModalProps) {
-    const { currentUser } = useAuth(); // ✅ Add Firebase auth
+    const { currentUser } = useAuth();
     const today = new Date();
     const [selectedDate, setSelectedDate] = useState<Date>(today);
     const [month, setMonth] = useState<Date>(today);
@@ -41,8 +52,7 @@ export default function UpdateModal({ onClose, todo, onTodoUpdated }: UpdateModa
     const [clockTime, setClockTime] = useState('');
     const [ap, setAp] = useState('AM');
     const [columnId, setColumnId] = useState('');
-    const [availableColumns, setAvailableColumns] = useState<any[]>([]);
-
+    const [availableColumns, setAvailableColumns] = useState<BoardColumn[]>([]);
     useEffect(() => {
         async function fetchBoardColumns() {
             if (!currentUser) {
@@ -52,7 +62,7 @@ export default function UpdateModal({ onClose, todo, onTodoUpdated }: UpdateModa
 
             try {
                 const token = await currentUser.getIdToken();
-                const response = await axios.get(`${BACKEND_URL}/board/oneBoard/${todo.boardId}`, {
+                const response = await axios.get<BoardResponse>(`${BACKEND_URL}/board/oneBoard/${todo.boardId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -63,7 +73,7 @@ export default function UpdateModal({ onClose, todo, onTodoUpdated }: UpdateModa
                 console.error('Error fetching board columns:', e);
             }
         }
-        
+
         if (currentUser) {
             fetchBoardColumns();
         }
@@ -75,7 +85,7 @@ export default function UpdateModal({ onClose, todo, onTodoUpdated }: UpdateModa
         setPriority(todo.priority);
         setType(todo.type);
         setColumnId(todo.columnId);
-        
+
         if (todo.time) {
             const dateObj = new Date(todo.time);
             setSelectedDate(dateObj);

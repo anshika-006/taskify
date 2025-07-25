@@ -21,7 +21,6 @@ export default function DeleteConfirmationModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md mx-4 transform transition-all duration-300">
-        {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
@@ -38,7 +37,6 @@ export default function DeleteConfirmationModal({
           </button>
         </div>
 
-        {/* Content */}
         <div className="mb-6">
           <p className="text-gray-600 mb-3">
             Are you sure you want to delete the board 
@@ -54,7 +52,6 @@ export default function DeleteConfirmationModal({
           </div>
         </div>
 
-        {/* Actions */}
         <div className="flex space-x-3">
           <button
             onClick={onCancel}

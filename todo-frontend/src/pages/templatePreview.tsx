@@ -59,6 +59,16 @@ interface Board {
     isTemplate: boolean;
 }
 
+interface OneBoardResponse {
+    board: Board;
+}
+
+interface CreateFromTemplateResponse {
+    board: {
+        _id: string;
+    };
+}
+
 const getIconForColumn = (columnId: string) => {
     const iconMap: { [key: string]: any } = {
         'todo': ListTodo,
@@ -283,7 +293,7 @@ export default function TemplatePreview() {
 
             try {
                 const token = await currentUser.getIdToken();
-                const response = await axios.get(`${BACKEND_URL}/board/oneBoard/${templateId}`, {
+                const response = await axios.get<OneBoardResponse>(`${BACKEND_URL}/board/oneBoard/${templateId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -322,7 +332,7 @@ export default function TemplatePreview() {
         setIsCreating(true);
         try {
             const token = await currentUser.getIdToken();
-            const response = await axios.post(`${BACKEND_URL}/board/createFromTemplate/${templateId}`, {}, {
+            const response = await axios.post<CreateFromTemplateResponse>(`${BACKEND_URL}/board/createFromTemplate/${templateId}`, {}, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

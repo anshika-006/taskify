@@ -6,6 +6,35 @@ import { BACKEND_URL } from "../config";
 import { useAuth } from "../contexts/AuthContext";
 import { updatePassword as firebaseUpdatePassword } from 'firebase/auth';
 
+interface Board {
+    _id: string;
+    name: string;
+    colorTheme: string;
+    lastAccessed?: string;
+}
+
+interface AllBoardsResponse {
+    userBoards: Board[];
+}
+
+interface Todo {
+    _id: string;
+    columnId: string;
+}
+
+interface TodosResponse {
+    todos: Todo[];
+}
+
+interface UserInfo {
+    name: string;
+    avatar: string;
+}
+
+interface UserInfoResponse {
+    user: UserInfo;
+}
+
 export default function Profile() {
   const [selectedAvatar, setSelectedAvatar] = useState<string>('');
   const [showAvatarSelector, setShowAvatarSelector] = useState<boolean>(false);
@@ -86,10 +115,8 @@ export default function Profile() {
     
     try {
       const token = await currentUser.getIdToken();
-      
-      // Try to get user info from your backend
       try {
-        const response = await axios.get(`${BACKEND_URL}/user/userInfo`, {
+        const response = await axios.get<UserInfoResponse>(`${BACKEND_URL}/user/userInfo`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -98,12 +125,9 @@ export default function Profile() {
         setName(name || '');
         setSelectedAvatar(avatar || '');
       } catch (backendError) {
-        // If user doesn't exist in backend, create basic profile
         console.log('User not found in backend, using Firebase data');
         await createUserProfile();
       }
-      
-      // Always get email from Firebase
       setEmail(currentUser.email || '');
       
     } catch (e) {
@@ -168,7 +192,6 @@ export default function Profile() {
     }
     
     try {
-      // Update password in Firebase
       await firebaseUpdatePassword(currentUser, newPassword);
       
       setShowPasswordUpdate(false);
@@ -193,7 +216,7 @@ export default function Profile() {
       const token = await currentUser.getIdToken();
       
       // Get all user boards first
-      const boardsResponse = await axios.get(`${BACKEND_URL}/board/allBoards`, {
+      const boardsResponse = await axios.get<AllBoardsResponse>(`${BACKEND_URL}/board/allBoards`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -202,11 +225,10 @@ export default function Profile() {
       const userBoards = boardsResponse.data.userBoards || [];
       let allTodos: any[] = [];
       let boardStatsData: any[] = [];
-      
-      // Get todos from each board and calculate board-wise stats
+
       for (const board of userBoards) {
         try {
-          const todosResponse = await axios.get(`${BACKEND_URL}/todo/board/${board._id}/todos`, {
+          const todosResponse = await axios.get<TodosResponse>(`${BACKEND_URL}/todo/board/${board._id}/todos`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -214,8 +236,7 @@ export default function Profile() {
           
           const boardTodos = todosResponse.data.todos || [];
           allTodos = [...allTodos, ...boardTodos];
-          
-          // Calculate board-specific statistics
+
           const completedTodos = boardTodos.filter(todo => 
             todo.columnId === 'finished' ||
             todo.columnId === 'completed' ||
@@ -287,8 +308,7 @@ export default function Profile() {
       const overallCompletionRate = allTodos.length > 0 
         ? Math.round((overallCompleted.length / allTodos.length) * 100) 
         : 0;
-      
-      // Sort boards by last accessed (most recent first)
+
       boardStatsData.sort((a, b) => {
         if (!a.lastAccessed && !b.lastAccessed) return 0;
         if (!a.lastAccessed) return 1;

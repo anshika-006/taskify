@@ -16,11 +16,11 @@ const todoBody = z.object({
     }, z.date()),
     type: z.string(),
     priority: z.string(),
-    columnId: z.string(), 
-    boardId: z.string() 
+    columnId: z.string(),
+    boardId: z.string()
 })
 
-router.post('/add',  verifyFirebaseToken, async (req: AuthenticatedRequest, res) => {
+router.post('/add', verifyFirebaseToken, async (req: AuthenticatedRequest, res) => {
     const { success } = todoBody.safeParse(req.body)
     try {
         if (!success) {
@@ -34,9 +34,9 @@ router.post('/add',  verifyFirebaseToken, async (req: AuthenticatedRequest, res)
             type: req.body.type,
             time: req.body.time,
             priority: req.body.priority,
-            columnId: req.body.columnId, 
+            columnId: req.body.columnId,
             boardId: req.body.boardId,
-            position: 0,                
+            position: 0,
             userId: req.userId
         })
         res.status(200).json({
@@ -57,11 +57,11 @@ const todoUpdate = z.object({
     time: z.string().optional(),
     type: z.string().optional(),
     priority: z.string().optional(),
-    columnId: z.string().optional(), 
-    position: z.number().optional()  
+    columnId: z.string().optional(),
+    position: z.number().optional()
 })
 
-router.put('/update/:id',  verifyFirebaseToken, async (req: AuthenticatedRequest, res) => {
+router.put('/update/:id', verifyFirebaseToken, async (req: AuthenticatedRequest, res) => {
     const { success } = todoUpdate.safeParse(req.body)
     try {
         if (!success) {
@@ -81,8 +81,8 @@ router.put('/update/:id',  verifyFirebaseToken, async (req: AuthenticatedRequest
                     ...(req.body.type && { type: req.body.type }),
                     ...(req.body.time && { time: req.body.time }),
                     ...(req.body.priority && { priority: req.body.priority }),
-                    ...(req.body.columnId && { columnId: req.body.columnId }), 
-                    ...(req.body.position !== undefined && { position: req.body.position }) 
+                    ...(req.body.columnId && { columnId: req.body.columnId }),
+                    ...(req.body.position !== undefined && { position: req.body.position })
                 }
             },
             { new: true }
@@ -104,13 +104,13 @@ router.put('/update/:id',  verifyFirebaseToken, async (req: AuthenticatedRequest
     }
 })
 
-router.get('/board/:boardId/todos',  verifyFirebaseToken, async (req: AuthenticatedRequest, res) => {
+router.get('/board/:boardId/todos', verifyFirebaseToken, async (req: AuthenticatedRequest, res) => {
     try {
-        const todos = await TODO.find({ 
+        const todos = await TODO.find({
             userId: req.userId,
-            boardId: req.params.boardId 
-        }).sort({ position: 1 }) 
-        
+            boardId: req.params.boardId
+        }).sort({ position: 1 })
+
         res.status(200).json({
             todos: todos
         })
@@ -122,11 +122,11 @@ router.get('/board/:boardId/todos',  verifyFirebaseToken, async (req: Authentica
 })
 
 const columnSchema = z.object({
-    columnId: z.string(), 
-    position: z.number().optional() 
+    columnId: z.string(),
+    position: z.number().optional()
 })
 
-router.put('/updateColumn/:id',  verifyFirebaseToken, async (req: AuthenticatedRequest, res) => {
+router.put('/updateColumn/:id', verifyFirebaseToken, async (req: AuthenticatedRequest, res) => {
     const { success } = columnSchema.safeParse(req.body)
     if (!success) {
         return res.status(400).json({
@@ -164,19 +164,19 @@ router.put('/updateColumn/:id',  verifyFirebaseToken, async (req: AuthenticatedR
     }
 })
 
-router.delete('/delete/:id',  verifyFirebaseToken, async (req: AuthenticatedRequest, res) => {
+router.delete('/delete/:id', verifyFirebaseToken, async (req: AuthenticatedRequest, res) => {
     try {
         const result = await TODO.deleteOne({
             userId: req.userId,
             _id: req.params.id
         })
-        
+
         if (result.deletedCount === 0) {
             return res.status(404).json({
                 msg: "Todo not found"
             })
         }
-        
+
         res.status(200).json({
             msg: "todo deleted"
         })
@@ -194,14 +194,14 @@ const moveSchema = z.object({
     boardId: z.string()
 })
 
-router.put('/move/:id',  verifyFirebaseToken, async (req: AuthenticatedRequest, res) => {
+router.put('/move/:id', verifyFirebaseToken, async (req: AuthenticatedRequest, res) => {
     const { success } = moveSchema.safeParse(req.body)
     if (!success) {
         return res.status(400).json({
             msg: "Invalid move data"
         })
     }
-    
+
     try {
         const targetColumnTodos = await TODO.find({
             userId: req.userId,
@@ -261,18 +261,18 @@ const reorderSchema = z.object({
 })
 
 
-router.put('/reorder',  verifyFirebaseToken, async (req: AuthenticatedRequest, res) => {
+router.put('/reorder', verifyFirebaseToken, async (req: AuthenticatedRequest, res) => {
     const { success } = reorderSchema.safeParse(req.body)
     if (!success) {
         return res.status(400).json({
             msg: "Invalid reorder data"
         })
     }
-    
+
     try {
-       const updatePromises = req.body.todoUpdates.map((update: { todoId: string; newPosition: number }) => 
-        TODO.findOneAndUpdate(
-            {
+        const updatePromises = req.body.todoUpdates.map((update: { todoId: string; newPosition: number }) =>
+            TODO.findOneAndUpdate(
+                {
                     _id: update.todoId,
                     userId: req.userId
                 },

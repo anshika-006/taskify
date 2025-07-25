@@ -15,6 +15,16 @@ interface Board {
     isTemplate: boolean;
 }
 
+interface AllBoardsResponse {
+    templateBoards: Board[];
+    userBoards: Board[];
+}
+
+interface AddBoardResponse {
+    board: Board;
+}
+
+
 export default function Dashboard() {
     const { currentUser, logout } = useAuth();
     useEffect(() => {
@@ -76,7 +86,7 @@ export default function Dashboard() {
         }
         try {
             const token = await currentUser.getIdToken();
-            const response = await axios.post(`${BACKEND_URL}/board/addBoard`, {
+            const response = await axios.post<AddBoardResponse>(`${BACKEND_URL}/board/addBoard`, {
                 name,
                 colorTheme
             }, {
@@ -103,7 +113,7 @@ export default function Dashboard() {
         }
         try {
             const token = await currentUser.getIdToken();
-            const response = await axios.get(`${BACKEND_URL}/board/allBoards`, {
+            const response = await axios.get<AllBoardsResponse>(`${BACKEND_URL}/board/allBoards`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
