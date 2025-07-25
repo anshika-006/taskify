@@ -4,8 +4,8 @@ import { getAuth } from 'firebase-admin/auth';
 
 if (!getApps().length) {
   initializeApp({
-    credential: cert('./firebase-service-account.json')
-  });
+  credential: cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT!))
+});
 }
 
 export interface AuthenticatedRequest extends Request {
