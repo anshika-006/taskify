@@ -1,4 +1,5 @@
 [build]
   base = "todo-frontend/"
   command = "npm run build"
-  publish = "todo-frontend/build/"
+  publish = "dist"
+
