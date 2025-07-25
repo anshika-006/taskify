@@ -257,26 +257,4 @@ router.put('/reorder', middleware_1.verifyFirebaseToken, (req, res) => __awaiter
         console.log(e);
     }
 }));
-router.post('/search/:boardId', middleware_1.verifyFirebaseToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const searchTerm = req.body.title;
-        if (!searchTerm) {
-            return res.status(400).json({ msg: "Search term is required." });
-        }
-        const response = yield db_1.TODO.find({
-            title: { $regex: `^${searchTerm}`, $options: 'i' },
-            userId: req.userId,
-            boardId: req.params.boardId
-        });
-        res.status(200).json({
-            todos: response
-        });
-    }
-    catch (e) {
-        res.status(500).json({
-            msg: "Couldn't find todos"
-        });
-        console.log(e);
-    }
-}));
 exports.default = router;
