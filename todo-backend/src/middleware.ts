@@ -1,14 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
-import serviceAccountLocal from '../firebase-service-account.json'; 
-
+import fs from 'fs';
 let serviceAccount: any;
 
 if (process.env.FIREBASE_SERVICE_ACCOUNT) {
   serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 } else {
-  serviceAccount = serviceAccountLocal;
+  serviceAccount = JSON.parse(
+    fs.readFileSync('./firebase-service-account.json', 'utf-8')
+  );
 }
 
 if (!getApps().length) {
