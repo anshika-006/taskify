@@ -3,7 +3,7 @@ import { BACKEND_URL } from "../config";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateBoardModal from "../components/modalDB";
-import { Search, Plus, User, Home, Bell, HelpCircle, CircleCheckBig, KeyboardIcon, LogOut, Users, SquareCheckBig } from "lucide-react";
+import { Search, Plus, User, Home, Bell, HelpCircle, KeyboardIcon, LogOut, Users, SquareCheckBig } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import DeleteConfirmationModal from "../components/deletemodal";
 
