@@ -439,7 +439,7 @@ export default function TemplatePreview() {
             )}
 
             {/* Preview Content */}
-            <div className={`flex h-screen overflow-hidden bg-slate-900 w-[99%]`}>
+            <div className={`flex h-screen overflow-hidden bg-slate-900 w-full`}>
                 <div className={`flex-1 min-w-0 rounded-xl shadow m-3 ${getBoardGradient(templateData.colorTheme)} overflow-hidden`}>
                     <div className={`overflow-hidden px-8 py-6 ${getHeaderGradient(templateData.colorTheme)}`}>
                         <div className="flex overflow-y-hidden items-center justify-between text-white">
@@ -452,7 +452,6 @@ export default function TemplatePreview() {
                                     <p className="mt-1">Manage your tasks efficiently</p>
                                 </div>
                             </div>
-                            {/* Re-added the "Add to My Boards" button here */}
                             <button
                                 onClick={handleAddToMyBoards}
                                 disabled={isCreating}
@@ -466,7 +465,7 @@ export default function TemplatePreview() {
 
                     <div className="flex-1 overflow-hidden">
                         <div className="h-full overflow-x-auto">
-                            <div className="flex h-full gap-6 p-6" style={{ minWidth: 'fit-content' }}>
+                            <div className="flex h-full gap-6 p-6 w-[99%]" style={{ minWidth: 'fit-content' }}>
                                 {Object.values(columns).map((column) => {
                                     const ColumnIconComponent = column.icon;
                                     return (
