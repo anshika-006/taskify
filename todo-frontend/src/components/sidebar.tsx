@@ -102,8 +102,8 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className="w-64 h-[97vh] flex flex-col shadow-2xl m-3 mr-0 backdrop-blur-xl">
-      <div className="flex items-center rounded-t-xl p-8 bg-gradient-to-br from-[#13223d] via-[#1a2d4a] to-[#0f1b2e] border-b border-blue-500/20">
+    <div className="w-64 h-[97%] flex flex-col shadow-2xl m-3 mr-0 backdrop-blur-xl ">
+      <div className="flex items-center rounded-t-xl p-9 bg-gradient-to-br from-[#13223d] via-[#1a2d4a] to-[#0f1b2e] border-b border-blue-500/20">
         <div className="p-2 bg-blue-500/20 rounded-lg mr-3 backdrop-blur-sm">
           <CheckSquare className="text-blue-400 w-6 h-6" />
         </div>
@@ -112,7 +112,7 @@ const Sidebar: React.FC = () => {
         </span>
       </div>
 
-      <div className="flex-grow bg-gradient-to-b from-[#172f51] via-[#1a3458] to-[#16304e] text-gray-300 flex flex-col rounded-b-xl border-l border-r border-b border-blue-500/10">
+      <div className="flex-grow overflow-y-auto bg-gradient-to-b from-[#172f51] via-[#1a3458] to-[#16304e] text-gray-300 flex flex-col rounded-b-xl border-l border-r border-b border-blue-500/10">
         <nav className="flex-grow p-6">
           <ul className="space-y-1">
             <SidebarLink

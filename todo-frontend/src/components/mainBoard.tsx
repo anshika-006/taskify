@@ -215,11 +215,11 @@ export default function MainBoard({ boardId, showModal, onCloseModal, onOpenModa
   const IconComponent = getTemplateIcon(boardData?.colorTheme || '');
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-900">
-      <div className="flex-shrink-0">
+    <div className="flex h-screen overflow-y-hidden bg-slate-900">
+      <div className="flex-shrink-0 ">
         <Sidebar />
       </div>
-      <div className={`flex-1 min-w-0 rounded-xl shadow m-3 ${getBoardGradient(boardData?.colorTheme || '')} overflow-hidden`}>
+      <div className={`flex-1 min-w-0 rounded-xl shadow m-3 ${getBoardGradient(boardData?.colorTheme || '')} overflow-y-hidden`}>
         <div className={`overflow-hidden px-8 py-6 ${getHeaderGradient(boardData?.colorTheme || '')}`}>
           <div className="flex overflow-y-hidden items-center justify-between text-white">
             <div className="flex items-center">
@@ -242,14 +242,14 @@ export default function MainBoard({ boardId, showModal, onCloseModal, onOpenModa
         </div>
         <div className="flex-1 overflow-hidden">
           <div className="h-full overflow-x-auto">
-            <div className="flex h-full gap-6 p-6" style={{ minWidth: 'fit-content' }}>
+            <div className="flex gap-6 p-6 w-[99%]" style={{ minWidth: 'fit-content' }}>
               <DragDropContext onDragEnd={handleDragEnd}>
                 {Object.values(filteredColumns).map((column) => {
                   const ColumnIcon = column.icon;
                   return (
                     <div
                       key={column.id}
-                      className="flex flex-col w-80 rounded-xl flex-shrink-0 shadow-xl"
+                      className="flex flex-col w-[24%] rounded-xl flex-shrink-0 shadow-xl"
                       style={{ height: 'calc(100vh - 180px)' }}
                     >
                       <div className="flex items-center gap-3 p-5 pb-4 border-b text-white flex-shrink-0 bg-[#1d2024] rounded-t-lg">

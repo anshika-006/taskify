@@ -147,7 +147,7 @@ export default function TodoForm({ boardId, onClose, onTodoAdded }: TodoFormProp
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-3xl transform transition-all duration-300 hover:shadow-2xl">
+            <div className="bg-white rounded-2xl p-8 shadow-xl w-full max-w-3xl transform transition-all duration-300 hover:shadow-2xl flex flex-col max-h-[95vh]">
                 <div onClick={onClose} className=' font-black flex justify-end cursor-pointer text-xl text-red-500'>
                     <X />
                 </div>
@@ -156,7 +156,7 @@ export default function TodoForm({ boardId, onClose, onTodoAdded }: TodoFormProp
                     <p className="text-gray-600">Add a new task to your list</p>
                 </div>
 
-                <div className='flex gap-4'>
+                <div className='flex gap-4 overflow-y-auto scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100'>
                     <div className="space-y-6 flex-1">
                         <div className="space-y-2">
                             <label className="flex items-center text-sm font-medium text-gray-700 mb-2">

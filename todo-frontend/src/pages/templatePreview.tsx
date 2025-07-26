@@ -375,7 +375,7 @@ export default function TemplatePreview() {
     const IconComponent = getTemplateIcon(templateData?.colorTheme);
 
     return (
-        <div className="flex relative h-screen bg-slate-900 min-w-full">
+        <div className="flex relative h-screen bg-slate-900 overflow-hidden">
             <div className="w-64 h-[97vh] flex flex-col shadow-lg m-3 mr-0">
                 <div className="flex items-center rounded-t-xl p-9 bg-[#13223d] ">
                     <CheckSquare className="text-blue-500 w-8 h-8 mr-3" />
@@ -439,12 +439,8 @@ export default function TemplatePreview() {
             )}
 
             {/* Preview Content */}
-            <div className={`flex h-screen overflow-hidden bg-slate-900`}>
-                <div className="flex-shrink-0">
-
-                </div>
-
-                <div className={`flex-1 min-w-0 rounded-xl shadow m-3 ml-6 ${getBoardGradient(templateData.colorTheme)} overflow-hidden`}>
+            <div className={`flex h-screen overflow-hidden bg-slate-900 w-[99%]`}>
+                <div className={`flex-1 min-w-0 rounded-xl shadow m-3 ${getBoardGradient(templateData.colorTheme)} overflow-hidden`}>
                     <div className={`overflow-hidden px-8 py-6 ${getHeaderGradient(templateData.colorTheme)}`}>
                         <div className="flex overflow-y-hidden items-center justify-between text-white">
                             <div className="flex">
@@ -476,7 +472,7 @@ export default function TemplatePreview() {
                                     return (
                                         <div
                                             key={column.id}
-                                            className="flex flex-col w-80 rounded-xl flex-shrink-0 shadow-xl"
+                                            className="flex flex-col w-[24%] rounded-xl flex-shrink-0 shadow-xl"
                                             style={{ height: 'calc(100vh - 180px)' }}
                                         >
                                             <div className="flex items-center gap-3 p-5 pb-4 border-b text-white flex-shrink-0 bg-[#1d2024] rounded-t-lg">

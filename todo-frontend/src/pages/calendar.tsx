@@ -251,8 +251,8 @@ export default function CalendarPage(): JSX.Element {
           <Sidebar />
         </div>
 
-        <div className="flex-1 flex flex-col rounded-xl shadow-4xl m-3 bg-gradient-to-br from-[#1A204F] to-[#0D1538] overflow-hidden">
-          <div className="px-8 py-6 rounded-t-xl bg-gradient-to-br from-[#07081A] to-[#121A42] flex-shrink-0 border-b border-slate-600">
+        <div className="flex-1 flex flex-col rounded-xl shadow-4xl m-3 bg-gradient-to-br from-[#1A204F] to-[#0D1538] overflow-auto">
+          <div className="px-8 py-6 rounded-t-xl bg-gradient-to-br from-[#07081A] via-[#121A42] to-[#07081A] flex-shrink-0 ">
             <div className="flex items-center justify-between text-white">
               <div className="flex">
                 <div className="w-16 h-16 mr-2">
@@ -334,7 +334,7 @@ export default function CalendarPage(): JSX.Element {
           </div>
 
           <div className="flex-1 p-6 overflow-hidden">
-            <div className="h-full bg-slate-800/50 backdrop-blur-sm rounded-xl p-4 flex flex-col border border-slate-600 ">
+            <div className="h-full bg-slate-800/50 overflow-auto backdrop-blur-sm rounded-xl p-4 flex flex-col border border-slate-600 ">
               <div className="grid grid-cols-7 gap-2 mb-4 flex-shrink-0">
                 {dayNames.map((day: string) => (
                   <div key={day} className="text-center text-slate-300 font-semibold py-2 text-sm">
@@ -343,7 +343,7 @@ export default function CalendarPage(): JSX.Element {
                 ))}
               </div>
 
-              <div className="grid grid-cols-7 gap-2 flex-1" style={{ gridTemplateRows: 'repeat(6,minmax(100px,1fr))' }}>
+              <div className="grid grid-cols-7 gap-2 flex-1" style={{ gridTemplateRows: 'repeat(6,minmax(1fr))' }}>
                 {days.map((day: number | null, index: number) => {
                   const dayTasks: Task[] = getTasksForDate(day);
                   const todayClass: string = isToday(day) ? 'bg-blue-500/20 ring-2 ring-blue-400/50' : '';

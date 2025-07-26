@@ -3,7 +3,7 @@ import { BACKEND_URL } from "../config";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateBoardModal from "../components/modalDB";
-import { Search, Plus, User, Home, Bell, HelpCircle, CircleCheckBig, KeyboardIcon, LogOut, Users } from "lucide-react";
+import { Search, Plus, User, Home, Bell, HelpCircle, CircleCheckBig, KeyboardIcon, LogOut, Users, SquareCheckBig } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import DeleteConfirmationModal from "../components/deletemodal";
 
@@ -283,7 +283,7 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between max-w-[90vw] mx-auto">
                     <div className="flex items-center ">
                         <div className="flex items-center space-x-2">
-                            <CircleCheckBig className="w-6 h-6 text-blue-500" />
+                            <SquareCheckBig className="w-6 h-6 text-blue-500" />
                             <span className="text-xl font-bold text-white">Taskify</span>
                         </div>
                     </div>

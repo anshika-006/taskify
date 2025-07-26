@@ -1,11 +1,20 @@
 import { Request, Response, NextFunction } from 'express';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
+import serviceAccountLocal from '../firebase-service-account.json'; 
+
+let serviceAccount: any;
+
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+} else {
+  serviceAccount = serviceAccountLocal;
+}
 
 if (!getApps().length) {
   initializeApp({
-  credential: cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT!))
-});
+    credential: cert(serviceAccount),
+  });
 }
 
 export interface AuthenticatedRequest extends Request {

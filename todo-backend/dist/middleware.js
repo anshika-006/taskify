@@ -8,13 +8,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyFirebaseToken = void 0;
 const app_1 = require("firebase-admin/app");
 const auth_1 = require("firebase-admin/auth");
+// if (!getApps().length) {
+//   initializeApp({
+//   credential: cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT!))
+// });
+// }
+const firebase_service_account_json_1 = __importDefault(require("../firebase-service-account.json")); // <-- works in dev if resolveJsonModule is true
+let serviceAccount;
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    // in production (Render or any CI/CD)
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+}
+else {
+    // in development (local)
+    serviceAccount = firebase_service_account_json_1.default;
+}
 if (!(0, app_1.getApps)().length) {
     (0, app_1.initializeApp)({
-        credential: (0, app_1.cert)('./firebase-service-account.json')
+        credential: (0, app_1.cert)(serviceAccount),
     });
 }
 const verifyFirebaseToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {

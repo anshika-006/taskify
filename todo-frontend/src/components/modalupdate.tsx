@@ -164,14 +164,14 @@ export default function UpdateModal({ onClose, todo, onTodoUpdated }: UpdateModa
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-3xl transform transition-all duration-300 hover:shadow-2xl">
+            <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-3xl transform transition-all duration-300 hover:shadow-2xl flex flex-col h-[95vh]">
                 <div onClick={onClose} className=' font-black flex justify-end cursor-pointer text-xl text-red-500'>
                     <X />
                 </div>
                 <div className="text-center mb-6">
                     <h2 className="text-2xl font-bold text-gray-800 mb-2">Update Todo</h2>
                 </div>
-                <div className='flex gap-4 text-black'>
+                <div className='flex gap-4 text-black overflow-y-auto scrollbar scrollbar-thumb-gray-300 scrollbar-track-gray-100'>
                     <div className="space-y-6 flex-1">
                         <div className="space-y-2">
                             <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
